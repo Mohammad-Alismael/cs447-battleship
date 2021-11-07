@@ -27,16 +27,10 @@ public class Main {
             }
         });
         frame.add(panel);
-//        PanelCreator myPanel = new PanelCreator("MyPanel");
-//        JLabel k = new JLabel("hello world");
-//        myPanel.CreatePanel().add(k);
-//        frame.add(myPanel.CreatePanel());
-//        frame.add(myPanel.CreatePanel());
-
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setTitle("simple gui app");
+        frame.setTitle("you");
         frame.pack();
-        frame.setSize(new Dimension(1000,600));
+        frame.setSize(new Dimension(400,400));
         frame.setLocationRelativeTo(null); // for centering the frame
         frame.setVisible(true);
     }
