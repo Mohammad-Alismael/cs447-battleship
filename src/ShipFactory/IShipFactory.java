@@ -1,5 +1,5 @@
 package ShipFactory;
 
 public interface IShipFactory {
-    Ship getShip(ShipType shipType,int length);
+    Ship getShip(ShipType shipType);
 }

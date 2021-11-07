@@ -8,4 +8,12 @@ public class Ship {
         this.length = length;
         this.symbol = symbol;
     }
+
+    public char getSymbol() {
+        return symbol;
+    }
+
+    public int getLength() {
+        return length;
+    }
 }

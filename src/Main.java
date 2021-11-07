@@ -1,4 +1,5 @@
 import Panels.PanelCreator;
+import ShipFactory.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -18,7 +19,9 @@ public class Main {
             public void actionPerformed(ActionEvent e) {
                 Client client = new Client();
                 try {
-                    client.sendMessage("wow it worked");
+                    IShipFactory shipFactory = new ShipFactory();
+                    Ship p = shipFactory.getShip(ShipType.CarrierShip);
+                    client.sendMessage(String.valueOf(p.getSymbol()));
                     client.closeSocket();
                 } catch (IOException ex) {
                     ex.printStackTrace();
@@ -33,5 +36,6 @@ public class Main {
         frame.setSize(new Dimension(400,400));
         frame.setLocationRelativeTo(null); // for centering the frame
         frame.setVisible(true);
+
     }
 }
