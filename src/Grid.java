@@ -26,12 +26,18 @@ public class Grid {
         }
     }
 
-    public void getIndex(String coordinates){
+    public int[] getIndex(String coordinates){
         String letter = coordinates.substring(0,1);
         int x = ht1.get(letter);
         int y = Integer.parseInt(coordinates.substring(1));
-        System.out.println(x);
-        System.out.println(y);
+        return new int[]{x-1, y-1};
+    }
+
+    public boolean isItWater(String coordinates){
+        int[] xys = getIndex(coordinates);
+        int x = xys[0];
+        int y = xys[1];
+        return gameBoard[x][y] == '-';
     }
 
     public void getElementIndex(String coordinates){

@@ -37,6 +37,6 @@ public class Main {
 //        frame.setLocationRelativeTo(null); // for centering the frame
 //        frame.setVisible(true);
 //        System.out.println(Grid.getInstance());
-        Grid.getInstance().getIndex("H3");
+        System.out.println(Grid.getInstance().isItWater("C4"));
     }
 }
