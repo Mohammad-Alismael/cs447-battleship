@@ -2,6 +2,7 @@ import ShipFactory.Ship;
 
 import java.util.Arrays;
 import java.util.Hashtable;
+import java.util.Random;
 
 // singleton class
 public class Grid {
@@ -40,15 +41,110 @@ public class Grid {
         return gameBoard[x][y] == '-';
     }
 
-    public void getElementIndex(String coordinates){
-
+    public char getElementIndex(String coordinates){
+        int[] xys = getIndex(coordinates);
+        int x = xys[0];
+        int y = xys[1];
+        return gameBoard[x][y];
     }
 
-    public boolean checkIfPossibleToAddShip(Ship ship){
-        return true;
+    private int[] generateRandomIndex(){
+        Random rng = new Random();
+        int x = rng.nextInt(10+1);
+        int y = rng.nextInt(10+1);
+        return new int[]{x -1 ,y-1};
+    }
+
+    private char[] SliceBoardGameForRows(int generatedX){
+        return gameBoard[generatedX];
+    }
+    private char[] SliceBoardGameForColumns(int generatedY){
+        char[] column = new char[10]; // Here I assume a rectangular 2D array!
+        for(int i=0; i<column.length; i++){
+            column[i] = gameBoard[i][generatedY];
+        }
+        return column;
+    }
+
+    private Boolean checkIfTheShipCanFitFromLeft(int shipLength, int[] generatedIndex){
+        char[]tmp = SliceBoardGameForRows(generatedIndex[0]);
+        int position = generatedIndex[0] - shipLength;
+        if (position > 0){
+            for (int i = position; i < shipLength; i++) {
+                if (tmp[i] != '-') return false;
+            }
+            return true;
+        }else {
+            return false;
+        }
+    }
+
+    private Boolean checkIfTheShipCanFitFromRight(int shipLength, int[] generatedIndex){
+        char[]tmp = SliceBoardGameForRows(generatedIndex[0]);
+        int position = generatedIndex[0] + shipLength;
+        if (position > 0){
+            for (int i = generatedIndex[0]; i < position; i++) {
+                if (tmp[i] != '-') return false;
+            }
+            return true;
+        }else {
+            return false;
+        }
+    }
+
+    private Boolean checkIfTheShipCanFitFromTop(int shipLength, int[] generatedIndex){
+        char[]tmp = SliceBoardGameForRows(generatedIndex[0]);
+        int position = generatedIndex[1] - shipLength;
+        if (position > 0){
+            for (int i = position; i < generatedIndex[1]; i++) {
+                if (tmp[i] != '-') return false;
+            }
+            return true;
+        }else {
+            return false;
+        }
+    }
+
+    private Boolean checkIfTheShipCanFitFromBottom(int shipLength, int[] generatedIndex){
+        char[]tmp = SliceBoardGameForRows(generatedIndex[0]);
+        int position = generatedIndex[1] + shipLength;
+        if (position > 0){
+            for (int i = generatedIndex[1]; i < position; i++) {
+                if (tmp[i] != '-') return false;
+            }
+            return true;
+        }else {
+            return false;
+        }
+    }
+
+    public boolean checkIfTheShipCanFitFromAllDirections(Ship ship){
+        int shipLength = ship.getLength();
+        int[] generatedIndex = generateRandomIndex();
+        boolean left = checkIfTheShipCanFitFromLeft(shipLength,generatedIndex);
+        boolean right = checkIfTheShipCanFitFromRight(shipLength,generatedIndex);
+        boolean top = checkIfTheShipCanFitFromTop(shipLength,generatedIndex);
+        boolean bottom = checkIfTheShipCanFitFromBottom(shipLength,generatedIndex);
+
+//        check for all directions
+        return left && right && top && bottom;
     }
 
     public void addShipToGameBoard(Ship ship){
+        int[] generatedIndex = generateRandomIndex();
+        int shipLength = ship.getLength();
+        if (checkIfTheShipCanFitFromLeft(shipLength,generatedIndex)){
+
+        }else if (checkIfTheShipCanFitFromRight(shipLength,generatedIndex)){
+
+        }else if(checkIfTheShipCanFitFromTop(shipLength,generatedIndex)){
+
+        }else if(checkIfTheShipCanFitFromBottom(shipLength,generatedIndex)){
+
+        }
+    }
+
+    public void addShip(){
 
     }
 
