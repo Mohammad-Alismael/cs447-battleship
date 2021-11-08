@@ -36,6 +36,7 @@ public class Main {
 //        frame.setSize(new Dimension(400,400));
 //        frame.setLocationRelativeTo(null); // for centering the frame
 //        frame.setVisible(true);
-        System.out.println(Grid.getInstance());
+//        System.out.println(Grid.getInstance());
+        Grid.getInstance().getIndex("H3");
     }
 }

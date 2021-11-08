@@ -1,5 +1,4 @@
 import ShipFactory.Ship;
-import ShipFactory.Water;
 
 import java.util.Arrays;
 import java.util.Hashtable;
@@ -9,7 +8,7 @@ public class Grid {
 
     private static Grid singleton = null;
     private char [][] gameBoard = new char[10][10];
-    private Hashtable<Integer, Character> ht1 = new Hashtable<>();
+    private Hashtable<Object, Integer> ht1 = new Hashtable<Object, Integer>();
 
     private Grid() {
         for (char[] row: gameBoard){
@@ -17,18 +16,22 @@ public class Grid {
         }
 
         storeChar();
-
+        System.out.println(ht1);
     }
 
     private void storeChar(){
-        char [] letters = {'A','B','C','D','E','F','G','H','I','J'};
+        String [] letters = {"A","B","C","D","E","F","G","H","I","J"};
         for (int i = 0; i < letters.length; i++) {
-            ht1.put(i+1,letters[0]);
+            ht1.put(letters[i],i+1);
         }
     }
 
     public void getIndex(String coordinates){
-
+        String letter = coordinates.substring(0,1);
+        int x = ht1.get(letter);
+        int y = Integer.parseInt(coordinates.substring(1));
+        System.out.println(x);
+        System.out.println(y);
     }
 
     public void getElementIndex(String coordinates){
