@@ -10,6 +10,7 @@ public class Grid {
     private static Grid singleton = null;
     private char [][] gameBoard = new char[10][10];
     private Hashtable<Object, Integer> ht1 = new Hashtable<Object, Integer>();
+    private int[] generatedIndex;
 
     private Grid() {
         for (char[] row: gameBoard){
@@ -17,7 +18,6 @@ public class Grid {
         }
 
         storeChar();
-        System.out.println(ht1);
     }
 
     private void storeChar(){
@@ -50,9 +50,11 @@ public class Grid {
 
     private int[] generateRandomIndex(){
         Random rng = new Random();
-        int x = rng.nextInt(10+1);
-        int y = rng.nextInt(10+1);
-        return new int[]{x -1 ,y-1};
+        int min = 0;
+        int max = 9;
+        int x = min + rng.nextInt(max-min +1);
+        int y = min + rng.nextInt(max-min +1);
+        return new int[]{x,y};
     }
 
     private char[] SliceBoardGameForRows(int generatedX){
@@ -67,9 +69,9 @@ public class Grid {
     }
 
     private Boolean checkIfTheShipCanFitFromLeft(int shipLength, int[] generatedIndex){
-        char[]tmp = SliceBoardGameForRows(generatedIndex[0]);
-        int position = generatedIndex[0] - shipLength;
-        if (position > 0){
+        char[]tmp = SliceBoardGameForRows(generatedIndex[1]);
+        int position = generatedIndex[1] - shipLength;
+        if (position >= 0 && position <= 10){
             for (int i = position; i < shipLength; i++) {
                 if (tmp[i] != '-') return false;
             }
@@ -80,9 +82,9 @@ public class Grid {
     }
 
     private Boolean checkIfTheShipCanFitFromRight(int shipLength, int[] generatedIndex){
-        char[]tmp = SliceBoardGameForRows(generatedIndex[0]);
-        int position = generatedIndex[0] + shipLength;
-        if (position > 0){
+        char[]tmp = SliceBoardGameForRows(generatedIndex[1]);
+        int position = generatedIndex[1] + shipLength;
+        if (position >= 0 && position <= 10){
             for (int i = generatedIndex[0]; i < position; i++) {
                 if (tmp[i] != '-') return false;
             }
@@ -93,10 +95,10 @@ public class Grid {
     }
 
     private Boolean checkIfTheShipCanFitFromTop(int shipLength, int[] generatedIndex){
-        char[]tmp = SliceBoardGameForRows(generatedIndex[0]);
-        int position = generatedIndex[1] - shipLength;
-        if (position > 0){
-            for (int i = position; i < generatedIndex[1]; i++) {
+        char[]tmp = SliceBoardGameForColumns(generatedIndex[0]);
+        int position = generatedIndex[0] - shipLength;
+        if (position >= 0 && position <= 10){
+            for (int i = position; i < generatedIndex[0]; i++) {
                 if (tmp[i] != '-') return false;
             }
             return true;
@@ -106,10 +108,10 @@ public class Grid {
     }
 
     private Boolean checkIfTheShipCanFitFromBottom(int shipLength, int[] generatedIndex){
-        char[]tmp = SliceBoardGameForRows(generatedIndex[0]);
-        int position = generatedIndex[1] + shipLength;
-        if (position > 0){
-            for (int i = generatedIndex[1]; i < position; i++) {
+        char[]tmp = SliceBoardGameForColumns(generatedIndex[0]);
+        int position = generatedIndex[0] + shipLength;
+        if (position >= 0 && position <= 10){
+            for (int i = generatedIndex[0]; i < position; i++) {
                 if (tmp[i] != '-') return false;
             }
             return true;
@@ -131,21 +133,47 @@ public class Grid {
     }
 
     public void addShipToGameBoard(Ship ship){
-        int[] generatedIndex = generateRandomIndex();
+        generatedIndex = generateRandomIndex();
         int shipLength = ship.getLength();
         if (checkIfTheShipCanFitFromLeft(shipLength,generatedIndex)){
-
+            addShipFromLeftToPoint(shipLength,generatedIndex,ship);
         }else if (checkIfTheShipCanFitFromRight(shipLength,generatedIndex)){
-
+            addShipFromRightToPoint(shipLength,generatedIndex,ship);
         }else if(checkIfTheShipCanFitFromTop(shipLength,generatedIndex)){
-
+            addShipFromTopToPoint(shipLength,generatedIndex,ship);
         }else if(checkIfTheShipCanFitFromBottom(shipLength,generatedIndex)){
-
+            addShipFromBottomToPoint(shipLength,generatedIndex,ship);
+        }else {
+            generatedIndex = generateRandomIndex();
         }
     }
 
-    public void addShip(){
+    private void addShipFromLeftToPoint(int shipLength,int[] generatedIndex,Ship ship){
+        int position = generatedIndex[1] - shipLength;
+        for (int i = generatedIndex[1]; i < shipLength ; i++) {
+            gameBoard[i][generatedIndex[1]] = ship.getSymbol();
+        }
+    }
 
+    private void addShipFromRightToPoint(int shipLength,int[] generatedIndex,Ship ship){
+//        int position = generatedIndex[1] + shipLength;
+        for (int i = generatedIndex[1] - shipLength; i < generatedIndex[1] ; i++) {
+            gameBoard[i][generatedIndex[1]] = ship.getSymbol();
+        }
+    }
+
+    private void addShipFromTopToPoint(int shipLength,int[] generatedIndex,Ship ship){
+        int position = generatedIndex[0] - shipLength;
+        for (int i = generatedIndex[0]; i < shipLength ; i++) {
+            gameBoard[i][generatedIndex[1]] = ship.getSymbol();
+        }
+    }
+
+    private void addShipFromBottomToPoint(int shipLength,int[] generatedIndex,Ship ship){
+        int position = generatedIndex[0] + shipLength;
+        for (int i = generatedIndex[0] - shipLength; i < generatedIndex[0] ; i++) {
+            gameBoard[i][generatedIndex[1]] = ship.getSymbol();
+        }
     }
 
     public boolean checkIfItsHit(String coordinates){
@@ -157,6 +185,18 @@ public class Grid {
         if (singleton == null)
             singleton = new Grid();
         return singleton;
+    }
+
+    public void getBoard(){
+        System.out.println("- - - - - - - - - - - - - - - - ");
+        for (int i = 0; i < 10; i++) {
+            System.out.print("|");
+            for (int j = 0; j < 10; j++) {
+                System.out.print(gameBoard[i][j] + ", ");
+            }
+            System.out.println("|");
+        }
+        System.out.println("- - - - - - - - - - - - - - - - ");
     }
 
     @Override

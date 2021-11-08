@@ -37,6 +37,15 @@ public class Main {
 //        frame.setLocationRelativeTo(null); // for centering the frame
 //        frame.setVisible(true);
 //        System.out.println(Grid.getInstance());
-        System.out.println(Grid.getInstance().isItWater("C4"));
+        IShipFactory shipFactory = new ShipFactory();
+        Grid grid  = Grid.getInstance();
+//        for (int i = 0; i < 5; i++) {
+            grid.addShipToGameBoard(shipFactory.getShip(ShipType.CarrierShip));
+//        }
+
+        grid.addShipToGameBoard(shipFactory.getShip(ShipType.BattleShip));
+        grid.addShipToGameBoard(shipFactory.getShip(ShipType.DestroyerShip));
+        grid.addShipToGameBoard(shipFactory.getShip(ShipType.SubmarineShip));
+        grid.getBoard();
     }
 }
