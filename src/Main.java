@@ -6,6 +6,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.util.Arrays;
 
 
 public class Main {
@@ -39,13 +40,11 @@ public class Main {
 //        System.out.println(Grid.getInstance());
         IShipFactory shipFactory = new ShipFactory();
         Grid grid  = Grid.getInstance();
-//        for (int i = 0; i < 5; i++) {
-            grid.addShipToGameBoard(shipFactory.getShip(ShipType.CarrierShip));
-//        }
-
-        grid.addShipToGameBoard(shipFactory.getShip(ShipType.BattleShip));
-        grid.addShipToGameBoard(shipFactory.getShip(ShipType.DestroyerShip));
-        grid.addShipToGameBoard(shipFactory.getShip(ShipType.SubmarineShip));
+        grid.addShipToGameBoard(shipFactory.getShip(ShipType.CarrierShip));
+//        grid.addShipToGameBoard(shipFactory.getShip(ShipType.BattleShip));
+//        grid.addShipToGameBoard(shipFactory.getShip(ShipType.DestroyerShip));
+//        grid.addShipToGameBoard(shipFactory.getShip(ShipType.SubmarineShip));
         grid.getBoard();
+
     }
 }
