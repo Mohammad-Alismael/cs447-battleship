@@ -23,7 +23,7 @@ public class Grid {
     private void storeChar(){
         String [] letters = {"A","B","C","D","E","F","G","H","I","J"};
         for (int i = 0; i < letters.length; i++) {
-            ht1.put(letters[i],i+1);
+            ht1.put(letters[i],i); // C4
         }
     }
 
@@ -52,10 +52,20 @@ public class Grid {
         Random rng = new Random();
         int min = 0;
         int max = 9;
-        int x = min + rng.nextInt(max-min +1);
-        int y = min + rng.nextInt(max-min +1);
+        int x;
+        int y;
+        x = min + rng.nextInt(max-min +1);
+        y = min + rng.nextInt(max-min +1);
         System.out.println("generated set "+Arrays.toString(new int[]{x,y}));
-        return new int[]{x,y};
+        if (gameBoard[x][y] != '-'){
+           return generateRandomIndex();
+        }else {
+            return new int[]{x, y};
+        }
+    }
+
+    public void setRandomIndex(int x, int y){
+        generatedIndex = new int[]{x-1,y-1};
     }
 
     private char[] SliceBoardGameForRows(int generatedX){
@@ -73,7 +83,7 @@ public class Grid {
         char[]tmp = SliceBoardGameForRows(generatedIndex[0]);
         int position = generatedIndex[0] - shipLength;
         if (position >= 0 && position <= 9){
-            for (int i = position; i < shipLength+1; i++) {
+            for (int i = position+1; i <= generatedIndex[0] ; i++) {
                 if (tmp[i] != '-') return false;
             }
             return true;
@@ -83,18 +93,20 @@ public class Grid {
     }
 
     private void addShipFromLeftToPoint(int shipLength,int[] generatedIndex,Ship ship){
-        int position = generatedIndex[0] - shipLength;
-        for (int i = position; i < shipLength+1 ; i++) {
-            gameBoard[i][generatedIndex[1]] = ship.getSymbol();
+        int position = generatedIndex[0] - shipLength;//
+        for (int i = position+1; i <= generatedIndex[0] ; i++) {
+            gameBoard [generatedIndex[1]][i] = ship.getSymbol();
         }
     }
 
     private Boolean checkIfTheShipCanFitFromRight(int shipLength, int[] generatedIndex){
-        char[]tmp = SliceBoardGameForRows(generatedIndex[1]);
+        char[]tmp = SliceBoardGameForRows(generatedIndex[0]);
         int position = generatedIndex[0] + shipLength;
         if (position >= 0 && position <= 9){
-            for (int i = generatedIndex[0]; i < position+1; i++) {
-                if (tmp[i] != '-') return false;
+            for (int i = generatedIndex[0]; i < position; i++) {
+                if (tmp[i] != '-'){
+                    return false;
+                }
             }
             return true;
         }else {
@@ -102,10 +114,12 @@ public class Grid {
         }
     }
 
+
+
     private void addShipFromRightToPoint(int shipLength,int[] generatedIndex,Ship ship){
         int position = generatedIndex[0] + shipLength;
-        for (int i = generatedIndex[0]; i < position+1 ; i++) {
-            gameBoard[i][generatedIndex[1]] = ship.getSymbol();
+        for (int i = generatedIndex[0]; i < position; i++) {
+            gameBoard [generatedIndex[1]][i] = ship.getSymbol();
         }
     }
 
@@ -125,7 +139,7 @@ public class Grid {
     private void addShipFromTopToPoint(int shipLength,int[] generatedIndex,Ship ship){
         int position = generatedIndex[1] - shipLength;
         for (int i = position; i < generatedIndex[1]+1 ; i++) {
-            gameBoard[generatedIndex[0]][i] = ship.getSymbol();
+            gameBoard [i][generatedIndex[0]] = ship.getSymbol();
         }
     }
 
@@ -134,10 +148,15 @@ public class Grid {
         int position = generatedIndex[1] + shipLength;
         if (position >= 0 && position <= 9){
             for (int i = generatedIndex[1]; i < position+1; i++) {
-                if (tmp[i] != '-') return false;
+                if (tmp[i] != '-'){
+                    System.out.println("case1");
+                    return false;
+                }
             }
+            System.out.println("case2");
             return true;
         }else {
+            System.out.println("case3");
             return false;
         }
     }
@@ -145,7 +164,7 @@ public class Grid {
     private void addShipFromBottomToPoint(int shipLength,int[] generatedIndex,Ship ship){
         int position = generatedIndex[1] + shipLength;
         for (int i = generatedIndex[1] ; i < position+1 ; i++) {
-            gameBoard[generatedIndex[0]][i] = ship.getSymbol();
+            gameBoard [i][generatedIndex[0]] = ship.getSymbol();
         }
     }
 
@@ -156,7 +175,6 @@ public class Grid {
         boolean right = checkIfTheShipCanFitFromRight(shipLength,generatedIndex);
         boolean top = checkIfTheShipCanFitFromTop(shipLength,generatedIndex);
         boolean bottom = checkIfTheShipCanFitFromBottom(shipLength,generatedIndex);
-
 //        check for all directions
         return left && right && top && bottom;
     }
@@ -179,6 +197,7 @@ public class Grid {
             addShipFromBottomToPoint(shipLength,generatedIndex,ship);
         }else {
             generatedIndex = generateRandomIndex();
+            System.out.println("all false");
         }
     }
 

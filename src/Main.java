@@ -40,10 +40,11 @@ public class Main {
 //        System.out.println(Grid.getInstance());
         IShipFactory shipFactory = new ShipFactory();
         Grid grid  = Grid.getInstance();
+
         grid.addShipToGameBoard(shipFactory.getShip(ShipType.CarrierShip));
-//        grid.addShipToGameBoard(shipFactory.getShip(ShipType.BattleShip));
-//        grid.addShipToGameBoard(shipFactory.getShip(ShipType.DestroyerShip));
-//        grid.addShipToGameBoard(shipFactory.getShip(ShipType.SubmarineShip));
+        grid.addShipToGameBoard(shipFactory.getShip(ShipType.BattleShip));
+        grid.addShipToGameBoard(shipFactory.getShip(ShipType.DestroyerShip));
+        grid.addShipToGameBoard(shipFactory.getShip(ShipType.SubmarineShip));
         grid.getBoard();
 
     }
