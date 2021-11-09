@@ -42,7 +42,6 @@ public class Main {
 //        for (int i = 0; i < 5; i++) {
             grid.addShipToGameBoard(shipFactory.getShip(ShipType.CarrierShip));
 //        }
-
         grid.addShipToGameBoard(shipFactory.getShip(ShipType.BattleShip));
         grid.addShipToGameBoard(shipFactory.getShip(ShipType.DestroyerShip));
         grid.addShipToGameBoard(shipFactory.getShip(ShipType.SubmarineShip));

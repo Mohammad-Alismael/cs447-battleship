@@ -16,14 +16,13 @@ public class Grid {
         for (char[] row: gameBoard){
             Arrays.fill(row,'-');
         }
-
         storeChar();
     }
 
     private void storeChar(){
         String [] letters = {"A","B","C","D","E","F","G","H","I","J"};
         for (int i = 0; i < letters.length; i++) {
-            ht1.put(letters[i],i+1);
+            ht1.put(letters[i],i);
         }
     }
 
@@ -69,7 +68,7 @@ public class Grid {
     }
 
     private Boolean checkIfTheShipCanFitFromLeft(int shipLength, int[] generatedIndex){
-        char[]tmp = SliceBoardGameForRows(generatedIndex[1]);
+        char[] tmp = SliceBoardGameForRows(generatedIndex[1]);
         int position = generatedIndex[1] - shipLength;
         if (position >= 0 && position <= 10){
             for (int i = position; i < shipLength; i++) {
