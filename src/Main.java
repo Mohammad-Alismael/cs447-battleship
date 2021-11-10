@@ -20,6 +20,8 @@ public class Main {
         player1.addShipToGameBoard(shipFactory.getShip(ShipType.DestroyerShip));
         player1.addShipToGameBoard(shipFactory.getShip(ShipType.SubmarineShip));
         player1.getBoardWithShips();
+        System.out.println("----");
+        System.out.println(Arrays.toString(player1.getGameBoard()[3]));
 
     }
 }

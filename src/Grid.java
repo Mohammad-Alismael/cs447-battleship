@@ -92,11 +92,11 @@ public class Grid {
     }
 
     private Boolean checkIfTheShipCanFitFromLeft(int shipLength, int[] generatedIndex){
-        char[]tmp = SliceBoardGameForRows(generatedIndex[0]);
+        char[]slicedRow = SliceBoardGameForRows(generatedIndex[0]);
         int position = generatedIndex[0] - shipLength;
         if (position >= 0 && position <= 9){
             for (int i = position+1; i <= generatedIndex[0] ; i++) {
-                if (tmp[i] != '-') return false;
+                if (slicedRow[i] != '-') return false;
             }
             return true;
         }else {
@@ -223,18 +223,11 @@ public class Grid {
         System.out.println("show board with hits");
     }
     public void getBoardWithShips(){
-        System.out.println("   - - - - - - - - - - - - - - - - ");
         System.out.print("   0  1  2  3  4  5  6  7  8  9 ");
         System.out.println();
         for (int i = 0; i < 10; i++) {
-            System.out.print(i + " ");
-            System.out.print("|");
-            for (int j = 0; j < 10; j++) {
-                System.out.print(gameBoard[i][j] + ", ");
-            }
-            System.out.println("|");
+            System.out.printf("%d %s\n",i,Arrays.toString(gameBoard[i]));
         }
-        System.out.println("   - - - - - - - - - - - - - - - - ");
     }
 
     @Override
