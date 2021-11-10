@@ -15,10 +15,10 @@ public class Main {
         IShipFactory shipFactory = new ShipFactory();
         Grid player1  = new Grid();
 
-        player1.addShipToGameBoard(shipFactory.getShip(ShipType.CarrierShip));
-        player1.addShipToGameBoard(shipFactory.getShip(ShipType.BattleShip));
-        player1.addShipToGameBoard(shipFactory.getShip(ShipType.DestroyerShip));
-        player1.addShipToGameBoard(shipFactory.getShip(ShipType.SubmarineShip));
+        player1.addShipToGameBoard(shipFactory.getShip(ShipType.CarrierShip));//5
+        player1.addShipToGameBoard(shipFactory.getShip(ShipType.BattleShip));//4
+        player1.addShipToGameBoard(shipFactory.getShip(ShipType.DestroyerShip));//2
+        player1.addShipToGameBoard(shipFactory.getShip(ShipType.SubmarineShip));//3
         player1.getBoardWithShips();
         System.out.println("----");
         System.out.println(Arrays.toString(player1.getGameBoard()[3]));

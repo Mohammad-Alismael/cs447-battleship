@@ -107,7 +107,7 @@ public class Grid {
     private void addShipFromLeftToPoint(int shipLength,int[] generatedIndex,Ship ship){
         int position = generatedIndex[0] - shipLength;//
         for (int i = position+1; i <= generatedIndex[0] ; i++) {
-            gameBoard [generatedIndex[1]][i] = ship.getSymbol();
+            gameBoard[i][generatedIndex[1]] = ship.getSymbol();
         }
     }
 
@@ -115,7 +115,7 @@ public class Grid {
         char[]tmp = SliceBoardGameForRows(generatedIndex[0]);
         int position = generatedIndex[0] + shipLength;
         if (position >= 0 && position <= 9){
-            for (int i = generatedIndex[0]; i < position; i++) {
+            for (int i = generatedIndex[0]; i < position-1; i++) {
                 if (tmp[i] != '-'){
                     return false;
                 }
@@ -130,8 +130,8 @@ public class Grid {
 
     private void addShipFromRightToPoint(int shipLength,int[] generatedIndex,Ship ship){
         int position = generatedIndex[0] + shipLength;
-        for (int i = generatedIndex[0]; i < position; i++) {
-            gameBoard [generatedIndex[1]][i] = ship.getSymbol();
+        for (int i = generatedIndex[0]; i < position-1; i++) {
+            gameBoard[i][generatedIndex[1]] = ship.getSymbol();
         }
     }
 
@@ -139,7 +139,7 @@ public class Grid {
         char[]tmp = SliceBoardGameForColumns(generatedIndex[1]);
         int position = generatedIndex[1] - shipLength;
         if (position >= 0 && position <= 9){
-            for (int i = position; i < generatedIndex[1]+1; i++) {
+            for (int i = position+1; i <= generatedIndex[1]; i++) {
                 if (tmp[i] != '-') return false;
             }
             return true;
@@ -150,8 +150,8 @@ public class Grid {
 
     private void addShipFromTopToPoint(int shipLength,int[] generatedIndex,Ship ship){
         int position = generatedIndex[1] - shipLength;
-        for (int i = position; i < generatedIndex[1]+1 ; i++) {
-            gameBoard [i][generatedIndex[0]] = ship.getSymbol();
+        for (int i = position+1; i <= generatedIndex[1] ; i++) {
+            gameBoard[generatedIndex[0]][i] = ship.getSymbol();
         }
     }
 
@@ -159,24 +159,19 @@ public class Grid {
         char[]tmp = SliceBoardGameForColumns(generatedIndex[1]);
         int position = generatedIndex[1] + shipLength;
         if (position >= 0 && position <= 9){
-            for (int i = generatedIndex[1]; i < position+1; i++) {
-                if (tmp[i] != '-'){
-                    System.out.println("case1");
-                    return false;
-                }
+            for (int i = generatedIndex[1]; i < position-1; i++) {
+                if (tmp[i] != '-') return false;
             }
-            System.out.println("case2");
             return true;
         }else {
-            System.out.println("case3");
             return false;
         }
     }
 
     private void addShipFromBottomToPoint(int shipLength,int[] generatedIndex,Ship ship){
         int position = generatedIndex[1] + shipLength;
-        for (int i = generatedIndex[1] ; i < position+1 ; i++) {
-            gameBoard [i][generatedIndex[0]] = ship.getSymbol();
+        for (int i = generatedIndex[1] ; i < position-1 ; i++) {
+            gameBoard[generatedIndex[0]][i] = ship.getSymbol();
         }
     }
 
@@ -189,6 +184,10 @@ public class Grid {
         boolean bottom = checkIfTheShipCanFitFromBottom(shipLength,generatedIndex);
 //        check for all directions
         return left && right && top && bottom;
+    }
+
+    private boolean checkBoundaries(int position){
+        return position >= 0 && position <= 9;
     }
 
     public void addShipToGameBoard(Ship ship){
