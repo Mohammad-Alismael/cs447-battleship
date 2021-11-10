@@ -7,17 +7,29 @@ import java.util.Random;
 // singleton class
 public class Grid {
 
-    private static Grid singleton = null;
     private char [][] gameBoard = new char[10][10];
+    private char [][] gameBoardWithHits = new char[10][10];
     private Hashtable<Object, Integer> ht1 = new Hashtable<Object, Integer>();
     private int[] generatedIndex;
 
-    private Grid() {
+    public Grid() {
         for (char[] row: gameBoard){
             Arrays.fill(row,'-');
         }
 
+        for (char[] row: gameBoardWithHits){
+            Arrays.fill(row,'-');
+        }
+
         storeChar();
+    }
+
+    public char[][] getGameBoard() {
+        return gameBoard;
+    }
+
+    public char[][] getGameBoardWithHits() {
+        return gameBoardWithHits;
     }
 
     private void storeChar(){
@@ -207,15 +219,11 @@ public class Grid {
         return true;
     }
 
-    public static Grid getInstance() {
-
-        if (singleton == null)
-            singleton = new Grid();
-        return singleton;
+    public void getBoardWithHits(){
+        System.out.println("show board with hits");
     }
-
-    public void getBoard(){
-        System.out.println("- - - - - - - - - - - - - - - - ");
+    public void getBoardWithShips(){
+        System.out.println("   - - - - - - - - - - - - - - - - ");
         System.out.print("   0  1  2  3  4  5  6  7  8  9 ");
         System.out.println();
         for (int i = 0; i < 10; i++) {
@@ -226,7 +234,7 @@ public class Grid {
             }
             System.out.println("|");
         }
-        System.out.println("- - - - - - - - - - - - - - - - ");
+        System.out.println("   - - - - - - - - - - - - - - - - ");
     }
 
     @Override

@@ -11,41 +11,15 @@ import java.util.Arrays;
 
 public class Main {
     public static void main(String[] args) {
-//        JFrame frame = new JFrame();
-//        JPanel panel = new JPanel();
-//        JButton btn = new JButton("send message");
-//        panel.add(btn);
-//        btn.addActionListener(new ActionListener() {
-//            @Override
-//            public void actionPerformed(ActionEvent e) {
-//                Client client = new Client();
-//                try {
-//                    IShipFactory shipFactory = new ShipFactory();
-//                    Ship p = shipFactory.getShip(ShipType.CarrierShip);
-//                    client.sendMessage(String.valueOf(p.getSymbol()));
-//                    client.closeSocket();
-//                } catch (IOException ex) {
-//                    ex.printStackTrace();
-//                    System.out.println("damn!");
-//                }
-//            }
-//        });
-//        frame.add(panel);
-//        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//        frame.setTitle("you");
-//        frame.pack();
-//        frame.setSize(new Dimension(400,400));
-//        frame.setLocationRelativeTo(null); // for centering the frame
-//        frame.setVisible(true);
-//        System.out.println(Grid.getInstance());
-        IShipFactory shipFactory = new ShipFactory();
-        Grid grid  = Grid.getInstance();
 
-        grid.addShipToGameBoard(shipFactory.getShip(ShipType.CarrierShip));
-        grid.addShipToGameBoard(shipFactory.getShip(ShipType.BattleShip));
-        grid.addShipToGameBoard(shipFactory.getShip(ShipType.DestroyerShip));
-        grid.addShipToGameBoard(shipFactory.getShip(ShipType.SubmarineShip));
-        grid.getBoard();
+        IShipFactory shipFactory = new ShipFactory();
+        Grid player1  = new Grid();
+
+        player1.addShipToGameBoard(shipFactory.getShip(ShipType.CarrierShip));
+        player1.addShipToGameBoard(shipFactory.getShip(ShipType.BattleShip));
+        player1.addShipToGameBoard(shipFactory.getShip(ShipType.DestroyerShip));
+        player1.addShipToGameBoard(shipFactory.getShip(ShipType.SubmarineShip));
+        player1.getBoardWithShips();
 
     }
 }
