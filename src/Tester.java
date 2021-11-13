@@ -5,14 +5,23 @@ public class Tester {
     public static final char [][] gameBoard = new char[10][10];
     public static void main(String[] args) {
 
-        char[]tmp = new char[] {'-','-','-','-','-','-','-','-','-','-'};
-        int[] generatedRandomIndex = generateRandomIndex();
-        System.out.println(checkIfTheShipCanFitFromLeft(generatedRandomIndex,tmp,4));
-        if (checkIfTheShipCanFitFromLeft(generatedRandomIndex,tmp,4)){
-            addShipFromLeftToPoint(4,generatedRandomIndex,tmp);
-        }
-        System.out.println(Arrays.toString(tmp));
+        char[]tmp = new char[] {'-','-','-','-','-','-','c','c','-','-'};
 
+        boolean res = false;
+        int counter = 0;
+        while (true){
+            int[] generatedRandomIndex = generateRandomIndex();
+            res = checkIfTheShipCanFitFromLeft(generatedRandomIndex,tmp,4);
+            if (res && generatedRandomIndex[0] != 5 && generatedRandomIndex[0] != 4){
+                addShipFromLeftToPoint(4,generatedRandomIndex,tmp);
+                break;
+            }
+            counter++;
+//            System.out.println(counter);
+        }
+
+//        addShipFromLeftToPoint(4,new int[]{6,0},tmp);
+        System.out.println(Arrays.toString(tmp));
     }
 
     public static boolean checksIfSymbolIncludes(char[] tmp,char search){
@@ -42,7 +51,7 @@ public class Tester {
     }
 
     private static void addShipFromLeftToPoint(int shipLength, int[] generatedIndex, char[] tmp){
-        int position = generatedIndex[0] - shipLength;//
+        int position = generatedIndex[0] - shipLength;
         for (int i = position+1; i <= generatedIndex[0] ; i++) {
             tmp[i] = 'a';
         }

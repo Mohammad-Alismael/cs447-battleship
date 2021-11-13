@@ -60,6 +60,10 @@ public class Grid {
         return gameBoard[x][y];
     }
 
+    public void changeElementIndex(int x,int y,char symbol){
+        gameBoard[x][y] = symbol;
+    }
+
     public int[] generateRandomIndex(){
         Random rng = new Random();
         int min = 0;
@@ -130,7 +134,7 @@ public class Grid {
 
     private void addShipFromRightToPoint(int shipLength,int[] generatedIndex,Ship ship){
         int position = generatedIndex[0] + shipLength;
-        for (int i = generatedIndex[0]; i < position-1; i++) {
+        for (int i = generatedIndex[0]; i < position; i++) {
             gameBoard[i][generatedIndex[1]] = ship.getSymbol();
         }
     }
@@ -177,7 +181,7 @@ public class Grid {
 
     public boolean checkIfTheShipCanFitFromAllDirections(Ship ship){
         int shipLength = ship.getLength();
-        int[] generatedIndex = generateRandomIndex();
+//        int[] generatedIndex = generateRandomIndex();
         boolean left = checkIfTheShipCanFitFromLeft(shipLength,generatedIndex);
         boolean right = checkIfTheShipCanFitFromRight(shipLength,generatedIndex);
         boolean top = checkIfTheShipCanFitFromTop(shipLength,generatedIndex);
@@ -189,26 +193,40 @@ public class Grid {
     private boolean checkBoundaries(int position){
         return position >= 0 && position <= 9;
     }
-
-    public void addShipToGameBoard(Ship ship){
-        generatedIndex = generateRandomIndex();
-        int shipLength = ship.getLength();
-        System.out.println("left " + checkIfTheShipCanFitFromLeft(shipLength,generatedIndex));
-        System.out.println("right " + checkIfTheShipCanFitFromRight(shipLength,generatedIndex));
-        System.out.println("top " + checkIfTheShipCanFitFromTop(shipLength,generatedIndex));
-        System.out.println("bottom " + checkIfTheShipCanFitFromBottom(shipLength,generatedIndex));
-
-        if (checkIfTheShipCanFitFromLeft(shipLength,generatedIndex)){
-            addShipFromLeftToPoint(shipLength,generatedIndex,ship);
-        }else if (checkIfTheShipCanFitFromRight(shipLength,generatedIndex)){
-            addShipFromRightToPoint(shipLength,generatedIndex,ship);
-        }else if(checkIfTheShipCanFitFromTop(shipLength,generatedIndex)){
-            addShipFromTopToPoint(shipLength,generatedIndex,ship);
-        }else if(checkIfTheShipCanFitFromBottom(shipLength,generatedIndex)){
-            addShipFromBottomToPoint(shipLength,generatedIndex,ship);
-        }else {
+    public void addShipToGameBoardv2(Ship ship){
+        while (true) {
             generatedIndex = generateRandomIndex();
-            System.out.println("all false");
+            int shipLength = ship.getLength();
+            if (checkIfTheShipCanFitFromAllDirections(ship)) {
+                addShipFromLeftToPoint(shipLength, generatedIndex, ship);
+                break;
+            }
+        }
+    }
+    public void addShipToGameBoard(Ship ship){
+        while (true) {
+            generatedIndex = generateRandomIndex();
+            int shipLength = ship.getLength();
+            System.out.println("left " + checkIfTheShipCanFitFromLeft(shipLength, generatedIndex));
+            System.out.println("right " + checkIfTheShipCanFitFromRight(shipLength, generatedIndex));
+            System.out.println("top " + checkIfTheShipCanFitFromTop(shipLength, generatedIndex));
+            System.out.println("bottom " + checkIfTheShipCanFitFromBottom(shipLength, generatedIndex));
+
+            if (checkIfTheShipCanFitFromLeft(shipLength, generatedIndex)) {
+                addShipFromLeftToPoint(shipLength, generatedIndex, ship);
+                break;
+            } else if (checkIfTheShipCanFitFromRight(shipLength, generatedIndex)) {
+                addShipFromRightToPoint(shipLength, generatedIndex, ship);
+                break;
+            } else if (checkIfTheShipCanFitFromTop(shipLength, generatedIndex)) {
+                addShipFromTopToPoint(shipLength, generatedIndex, ship);
+                break;
+            } else if (checkIfTheShipCanFitFromBottom(shipLength, generatedIndex)) {
+                addShipFromBottomToPoint(shipLength, generatedIndex, ship);
+                break;
+            } else {
+                System.out.println("all false");
+            }
         }
     }
 

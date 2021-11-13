@@ -34,7 +34,7 @@ public class Client {
 
     public static void main(String[] args) throws IOException, ClassNotFoundException {
         Client player2  = new Client();
-//        player2.sendMessage("ahmed");
+        player2.sendMessage("ahmed");
         player2.readFromServer();
         player2.closeSocket();
     }
