@@ -11,6 +11,7 @@ public class Grid {
     private char [][] gameBoardWithHits = new char[10][10];
     private Hashtable<Object, Integer> ht1 = new Hashtable<Object, Integer>();
     private int[] generatedIndex;
+    private int points = 0;
 
     public Grid() {
         for (char[] row: gameBoard){
@@ -22,6 +23,15 @@ public class Grid {
         }
 
         storeChar();
+    }
+
+    public void incrementPoint(){
+        if (points < 14) points++;
+        else throw new IllegalArgumentException("you can increment more than 14");
+    }
+
+    public boolean checkWins(){
+        return points >= 14;
     }
 
     public char[][] getGameBoard() {
@@ -43,7 +53,7 @@ public class Grid {
         String letter = coordinates.substring(0,1);
         int x = ht1.get(letter);
         int y = Integer.parseInt(coordinates.substring(1));
-        return new int[]{x-1, y-1};
+        return new int[]{x, y-1};
     }
 
     public boolean isItWater(String coordinates){
@@ -51,6 +61,24 @@ public class Grid {
         int x = xys[0];
         int y = xys[1];
         return gameBoard[x][y] == '-';
+    }
+
+
+
+    public void shoot(String coordinates){
+        int[] xys = getIndex(coordinates);
+        int x = xys[0];
+        int y = xys[1];
+        if (gameBoard[y][x] != '-'){
+            incrementPoint();
+            gameBoardWithHits[y][x] = 'H';
+            gameBoard[y][x] = 'H';
+            System.out.println("you hit!!");
+        }else {
+            gameBoardWithHits[y][x] = 'X';
+            gameBoard[y][x] = 'X';
+            System.out.println("you missed!!");
+        }
     }
 
     public char getElementIndex(String coordinates){
@@ -189,19 +217,7 @@ public class Grid {
         return left && right && top && bottom;
     }
 
-    private boolean checkBoundaries(int position){
-        return position >= 0 && position <= 9;
-    }
-    public void addShipToGameBoardv2(Ship ship){
-        while (true) {
-            generatedIndex = generateRandomIndex();
-            int shipLength = ship.getLength();
-            if (checkIfTheShipCanFitFromAllDirections(ship)) {
-                addShipFromLeftToPoint(shipLength, generatedIndex, ship);
-                break;
-            }
-        }
-    }
+
     public void addShipToGameBoard(Ship ship){
             generatedIndex = generateRandomIndex();
             int shipLength = ship.getLength();
@@ -225,25 +241,31 @@ public class Grid {
         }
 
 
-
-    public boolean checkIfItsHit(String coordinates){
-        return true;
-    }
-
     public void getBoardWithHits(){
-        System.out.println("show board with hits");
-    }
-    public void getBoardWithShips(){
-        System.out.print("   0  1  2  3  4  5  6  7  8  9 ");
+        System.out.print("   A  B  C  D  E  F  G  H  I  J");
         System.out.println();
         for (int i = 0; i < 10; i++) {
-            System.out.printf("%d %s\n",i,Arrays.toString(gameBoard[i]));
+            System.out.printf("%d  %s\n",i+1,Arrays.toString(gameBoardWithHits[i]));
         }
     }
-
-    @Override
-    public String toString() {
-
-       return Arrays.deepToString(gameBoard);
+    public void getBoardWithShips(){
+        System.out.print("   A  B  C  D  E  F  G  H  I  J");
+        System.out.println();
+        for (int i = 0; i < 9; i++) {
+            System.out.printf("%d %s\n",i+1,Arrays.toString(gameBoard[i]));
+        }
+        System.out.printf("%d%s\n",10,Arrays.toString(gameBoard[9]));
     }
+
+    public void getBothBoards(char [][] board){
+        System.out.println("              You                                    Opponent              ");
+        System.out.print("   A  B  C  D  E  F  G  H  I  J           A  B  C  D  E  F  G  H  I  J");
+        System.out.println();
+        for (int i = 0; i < 9; i++) {
+            System.out.printf("%d %s       %d %s\n",i+1,Arrays.toString(gameBoard[i]),i+1,Arrays.toString(board[i]));
+        }
+        System.out.printf("%d%s       %d%s\n",10,Arrays.toString(gameBoard[9]),10,Arrays.toString(board[9]));
+    }
+
+
 }
