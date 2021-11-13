@@ -1,4 +1,5 @@
-import ShipFactory.Ship;
+
+import ShipFactory.*;
 
 import java.util.Arrays;
 import java.util.Hashtable;
@@ -12,8 +13,10 @@ public class Grid {
     private Hashtable<Object, Integer> ht1 = new Hashtable<Object, Integer>();
     private int[] generatedIndex;
     private int points = 0;
-
+    private String opponentName = "Opponent";
+    private String myName = "You";
     public Grid() {
+        System.out.println("loading board...");
         for (char[] row: gameBoard){
             Arrays.fill(row,'-');
         }
@@ -23,6 +26,12 @@ public class Grid {
         }
 
         storeChar();
+        IShipFactory shipFactory = new ShipFactory();
+        addShipToGameBoard(shipFactory.getShip(ShipType.CarrierShip));
+        addShipToGameBoard(shipFactory.getShip(ShipType.BattleShip));
+        addShipToGameBoard(shipFactory.getShip(ShipType.DestroyerShip));
+        addShipToGameBoard(shipFactory.getShip(ShipType.SubmarineShip));
+        System.out.println("board finished!");
     }
 
     public void incrementPoint(){
@@ -36,6 +45,22 @@ public class Grid {
 
     public char[][] getGameBoard() {
         return gameBoard;
+    }
+
+    public String getOpponentName() {
+        return this.opponentName;
+    }
+
+    public void setOpponentName(String opponentName) {
+        this.opponentName = opponentName;
+    }
+
+    public String getMyName() {
+        return myName;
+    }
+
+    public void setMyName(String myName) {
+        this.myName = myName;
     }
 
     public char[][] getGameBoardWithHits() {
@@ -100,7 +125,7 @@ public class Grid {
         int y;
         x = min + rng.nextInt(max-min +1);
         y = min + rng.nextInt(max-min +1);
-        System.out.println("generated set "+Arrays.toString(new int[]{x,y}));
+//        System.out.println("generated set "+Arrays.toString(new int[]{x,y}));
         if (gameBoard[y][x] != '-'){
            return generateRandomIndex();
         }else {
@@ -206,25 +231,14 @@ public class Grid {
         }
     }
 
-    public boolean checkIfTheShipCanFitFromAllDirections(Ship ship){
-        int shipLength = ship.getLength();
-//        int[] generatedIndex = generateRandomIndex();
-        boolean left = checkIfTheShipCanFitFromLeft(shipLength,generatedIndex);
-        boolean right = checkIfTheShipCanFitFromRight(shipLength,generatedIndex);
-        boolean top = checkIfTheShipCanFitFromTop(shipLength,generatedIndex);
-        boolean bottom = checkIfTheShipCanFitFromBottom(shipLength,generatedIndex);
-//        check for all directions
-        return left && right && top && bottom;
-    }
-
 
     public void addShipToGameBoard(Ship ship){
             generatedIndex = generateRandomIndex();
             int shipLength = ship.getLength();
-            System.out.println("left " + checkIfTheShipCanFitFromLeft(shipLength, generatedIndex));
-            System.out.println("right " + checkIfTheShipCanFitFromRight(shipLength, generatedIndex));
-            System.out.println("top " + checkIfTheShipCanFitFromTop(shipLength, generatedIndex));
-            System.out.println("bottom " + checkIfTheShipCanFitFromBottom(shipLength, generatedIndex));
+//            System.out.println("left " + checkIfTheShipCanFitFromLeft(shipLength, generatedIndex));
+//            System.out.println("right " + checkIfTheShipCanFitFromRight(shipLength, generatedIndex));
+//            System.out.println("top " + checkIfTheShipCanFitFromTop(shipLength, generatedIndex));
+//            System.out.println("bottom " + checkIfTheShipCanFitFromBottom(shipLength, generatedIndex));
 
             if (checkIfTheShipCanFitFromLeft(shipLength, generatedIndex)) {
                 addShipFromLeftToPoint(shipLength, generatedIndex, ship);
@@ -258,7 +272,7 @@ public class Grid {
     }
 
     public void getBothBoards(char [][] board){
-        System.out.println("              You                                    Opponent              ");
+        System.out.printf("              %s                                    %s              \n",myName,opponentName);
         System.out.print("   A  B  C  D  E  F  G  H  I  J           A  B  C  D  E  F  G  H  I  J");
         System.out.println();
         for (int i = 0; i < 9; i++) {
