@@ -1,7 +1,7 @@
 public class Tester {
     public static void main(String[] args) {
 
-        char[]tmp = new char[] {'-','-','-','-','A','-','-','-'};
+        char[]tmp = new char[] {'-','-','-','-','-','-','-','-'};
         boolean found = false;
         char searchedValue = 'A';
 
@@ -12,8 +12,8 @@ public class Tester {
             }
         }
         System.out.println(found);
-        System.out.println(checksIfSymbolIncludes(tmp,'A'));
-        System.out.println(V2(tmp,'A'));
+        System.out.println(checksIfSymbolIncludes(tmp,searchedValue));
+        System.out.println(V2(tmp,searchedValue));
     }
 
     public static boolean checksIfSymbolIncludes(char[] tmp,char search){

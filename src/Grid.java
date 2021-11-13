@@ -84,9 +84,9 @@ public class Grid {
         int position = generatedIndex[0] - shipLength;
         if (position >= 0 && position <= 9){
             for (int i = position+1; i <= generatedIndex[0] ; i++) {
-                if (tmp[i] != '-') return false;
+                if (tmp[i] == '-') return true;
             }
-            return true;
+            return false;
         }else {
             return false;
         }
@@ -104,11 +104,11 @@ public class Grid {
         int position = generatedIndex[0] + shipLength;
         if (position >= 0 && position <= 9){
             for (int i = generatedIndex[0]; i < position; i++) {
-                if (tmp[i] != '-'){
-                    return false;
+                if (tmp[i] == '-'){
+                    return true;
                 }
             }
-            return true;
+            return false;
         }else {
             return false;
         }
@@ -128,9 +128,9 @@ public class Grid {
         int position = generatedIndex[1] - shipLength;
         if (position >= 0 && position <= 9){
             for (int i = position; i < generatedIndex[1]+1; i++) {
-                if (tmp[i] != '-') return false;
+                if (tmp[i] == '-') return true;
             }
-            return true;
+            return false;
         }else {
             return false;
         }
@@ -148,15 +148,12 @@ public class Grid {
         int position = generatedIndex[1] + shipLength;
         if (position >= 0 && position <= 9){
             for (int i = generatedIndex[1]; i < position+1; i++) {
-                if (tmp[i] != '-'){
-                    System.out.println("case1");
-                    return false;
+                if (tmp[i] == '-'){
+                    return true;
                 }
             }
-            System.out.println("case2");
-            return true;
+            return false;
         }else {
-            System.out.println("case3");
             return false;
         }
     }
