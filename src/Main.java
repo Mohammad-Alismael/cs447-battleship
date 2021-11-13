@@ -7,45 +7,27 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Scanner;
 
 
 public class Main {
     public static void main(String[] args) {
-//        JFrame frame = new JFrame();
-//        JPanel panel = new JPanel();
-//        JButton btn = new JButton("send message");
-//        panel.add(btn);
-//        btn.addActionListener(new ActionListener() {
-//            @Override
-//            public void actionPerformed(ActionEvent e) {
-//                Client client = new Client();
-//                try {
-//                    IShipFactory shipFactory = new ShipFactory();
-//                    Ship p = shipFactory.getShip(ShipType.CarrierShip);
-//                    client.sendMessage(String.valueOf(p.getSymbol()));
-//                    client.closeSocket();
-//                } catch (IOException ex) {
-//                    ex.printStackTrace();
-//                    System.out.println("damn!");
-//                }
-//            }
-//        });
-//        frame.add(panel);
-//        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//        frame.setTitle("you");
-//        frame.pack();
-//        frame.setSize(new Dimension(400,400));
-//        frame.setLocationRelativeTo(null); // for centering the frame
-//        frame.setVisible(true);
-//        System.out.println(Grid.getInstance());
+        Scanner input = new Scanner(System.in);
         IShipFactory shipFactory = new ShipFactory();
-        Grid grid  = Grid.getInstance();
+        Grid player1  = new Grid();
+        player1.addShipToGameBoard(shipFactory.getShip(ShipType.CarrierShip));//5
+        player1.addShipToGameBoard(shipFactory.getShip(ShipType.BattleShip));//4
+        player1.addShipToGameBoard(shipFactory.getShip(ShipType.DestroyerShip));//2
+        player1.addShipToGameBoard(shipFactory.getShip(ShipType.SubmarineShip));//3
 
-        grid.addShipToGameBoard(shipFactory.getShip(ShipType.CarrierShip));
-        grid.addShipToGameBoard(shipFactory.getShip(ShipType.BattleShip));
-        grid.addShipToGameBoard(shipFactory.getShip(ShipType.DestroyerShip));
-        grid.addShipToGameBoard(shipFactory.getShip(ShipType.SubmarineShip));
-        grid.getBoard();
+        System.out.print("place to shoot> ");
+        String coordinates = input.next();
+        while (!coordinates.equals("quit")) {
 
+            player1.shoot(coordinates);
+            player1.getBothBoards(player1.getGameBoardWithHits());
+            System.out.print("place to shoot> ");
+            coordinates = input.next();
+        }
     }
 }
