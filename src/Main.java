@@ -1,6 +1,9 @@
 import Panels.PanelCreator;
 import ShipFactory.*;
 
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -12,22 +15,34 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-        Scanner input = new Scanner(System.in);
-        IShipFactory shipFactory = new ShipFactory();
-        Grid player1  = new Grid();
-        player1.addShipToGameBoard(shipFactory.getShip(ShipType.CarrierShip));//5
-        player1.addShipToGameBoard(shipFactory.getShip(ShipType.BattleShip));//4
-        player1.addShipToGameBoard(shipFactory.getShip(ShipType.DestroyerShip));//2
-        player1.addShipToGameBoard(shipFactory.getShip(ShipType.SubmarineShip));//3
+       Grid g = new Grid();
 
-        System.out.print("place to shoot> ");
-        String coordinates = input.next();
-//        while (!coordinates.equals("quit")) {
-//
-//            player1.shoot(coordinates);
-//            player1.getBothBoards(player1.getGameBoardWithHits());
-//            System.out.print("place to shoot> ");
-//            coordinates = input.next();
-//        }
+       try {
+
+           System.out.println(Arrays.toString(g.getIndex("fsg6")));
+//           System.out.println(Arrays.toString(g.getIndex("6f")));
+       }catch (Exception e){
+           System.out.println(e.getMessage());
+       }
+
+
+    }
+
+    public static synchronized void playSound(final String url) {
+        new Thread(new Runnable() {
+            // The wrapper thread is unnecessary, unless it blocks on the
+            // Clip finishing; see comments.
+            public void run() {
+                try {
+                    Clip clip = AudioSystem.getClip();
+                    AudioInputStream inputStream = AudioSystem.getAudioInputStream(
+                            Main.class.getResourceAsStream("/path/to/sounds/" + url));
+                    clip.open(inputStream);
+                    clip.start();
+                } catch (Exception e) {
+                    System.err.println(e.getMessage());
+                }
+            }
+        }).start();
     }
 }

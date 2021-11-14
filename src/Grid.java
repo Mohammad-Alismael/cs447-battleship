@@ -77,10 +77,31 @@ public class Grid {
     }
 
     public int[] getIndex(String coordinates){
-        String letter = coordinates.substring(0,1);
-        int x = ht1.get(letter);
-        int y = Integer.parseInt(coordinates.substring(1));
-        return new int[]{x, y-1};
+        coordinates = coordinates.toUpperCase();
+        Boolean switched = Character.isDigit(coordinates.charAt(0));// fist letter is a number
+//        if (switched) {
+            if (coordinates.length() <= 3) {
+                String letter = coordinates.substring(0, 1);
+                if (ht1.get(letter) == null) throw new IllegalArgumentException("out of index coordinates!");
+                int x = ht1.get(letter);
+                int y = Integer.parseInt(coordinates.substring(1));
+                if (y > 10 || y <= 0) throw new IllegalArgumentException("out of index coordinates!");
+                return new int[]{x, y - 1};
+            } else {
+                throw new IllegalArgumentException("incorrect coordinates!");
+            }
+//        }else {
+//            if (coordinates.length() <= 3) {
+//                String letter = coordinates.substring(1);
+//                if (ht1.get(letter) == null) throw new IllegalArgumentException("out of index coordinates!");
+//                int y = ht1.get(letter);
+//                int x = Integer.parseInt(coordinates.substring(0,1));
+//                if (y > 10 || y <= 0) throw new IllegalArgumentException("out of index coordinates!");
+//                return new int[]{x, y - 1};
+//            } else {
+//                throw new IllegalArgumentException("incorrect coordinates!");
+//            }
+//        }
     }
 
     public boolean isItWater(String coordinates){
