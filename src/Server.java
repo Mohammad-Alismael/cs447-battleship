@@ -39,17 +39,16 @@ public class Server {
             System.out.printf("%s has been connected\n",opponentName);
             //create ObjectOutputStream object for sending to client
 
-            //send board to client
-            oos.writeObject(player1.getGameBoard());
-            oos.flush();
-
-            // shooting my first shot
-
             while (!player1.checkWins()) {
+                //send board to client
+                oos.writeObject(player1.getGameBoard());
+                oos.flush();
+
                 // get board from client
                 char[][] opponentBoardWithShips = (char[][]) ois.readObject();
                 player1.getBothBoards(player1.getGameBoardWithHits());
 
+                // shooting my first shot
                 String coordinates = shoot(input);
                 char[][] newOpponentBoardWithShips = player1.shoot(coordinates, opponentBoardWithShips);
                 player1.getBothBoards(player1.getGameBoardWithHits());
