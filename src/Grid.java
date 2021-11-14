@@ -45,6 +45,10 @@ public class Grid {
         return gameBoard;
     }
 
+    public void setGameBoard(char[][] gameBoard) {
+        this.gameBoard = gameBoard;
+    }
+
     public String getOpponentName() {
         return this.opponentName;
     }
@@ -88,20 +92,21 @@ public class Grid {
 
 
 
-    public void shoot(String coordinates,char[][] boardWithShips,char[][] boardWithHits){
+    public char[][] shoot(String coordinates, char[][] boardWithShips){
         int[] xys = getIndex(coordinates);
         int x = xys[0];
         int y = xys[1];
         if (boardWithShips[y][x] != '-'){
             incrementPoint();
-            boardWithHits[y][x] = 'H';
+            gameBoardWithHits[y][x] = 'H';
             boardWithShips[y][x] = 'H';
             System.out.println("you hit!!");
         }else {
-            boardWithHits[y][x] = 'X';
+            gameBoardWithHits[y][x] = 'X';
             boardWithShips[y][x] = 'X';
             System.out.println("you missed!!");
         }
+        return boardWithShips;
     }
 
     public char getElementIndex(String coordinates){

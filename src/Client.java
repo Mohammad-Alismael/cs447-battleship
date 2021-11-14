@@ -45,6 +45,10 @@ public class Client {
     public void sendBoard(char[][] board) throws IOException {
         oos.writeObject(board);
     }
+    public char[][] getNewBoard() throws IOException, ClassNotFoundException {
+        char[][] board = (char[][]) ois.readObject();
+        return board;
+    }
     public void closeSocket() throws IOException {
         dataOutput.flush();
         dataOutput.close();
@@ -62,11 +66,35 @@ public class Client {
         player2.setMyName(username);
         client.sendUsername(username);
 
-        char[][] opponentBoard = client.getServerBoard();
-        player2.getBothBoards(opponentBoard);
+        while (!player2.checkWins()) {
+            char[][] opponentBoardWithShips = client.getServerBoard();
+            player2.getBothBoards(player2.getGameBoardWithHits());
 
-        client.sendBoard(player2.getGameBoard());
+            client.sendBoard(player2.getGameBoard());
+            System.out.printf("waiting %s to shoot\n", player2.getOpponentName());
 
-        client.closeSocket();
+            player2.setGameBoard(client.getNewBoard());
+            player2.getBothBoards(player2.getGameBoardWithHits());
+
+            // shooting my first shot
+            String coordinates = shoot(input);
+            char[][] newOpponentBoardWithShips = player2.shoot(coordinates, opponentBoardWithShips);
+            player2.getBothBoards(player2.getGameBoardWithHits());
+
+            client.oos.writeObject(newOpponentBoardWithShips);
+            client.oos.flush();
+
+            System.out.printf("waiting %s to shoot\n", player2.getOpponentName());
+        }
+        if (player2.checkWins()) {
+            System.out.println("you've won the game congrats");
+            client.closeSocket();
+        }
+
+    }
+
+    public static String shoot(Scanner input){
+        System.out.print("shoot a place>");
+        return input.next();
     }
 }
