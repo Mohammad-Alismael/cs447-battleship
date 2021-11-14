@@ -8,6 +8,7 @@ public class Client {
     DataInputStream dataInput;
     Socket socket;
     ObjectInputStream ois;
+    ObjectOutputStream oos;
     public Client() {
         try{
 
@@ -15,7 +16,8 @@ public class Client {
             System.out.println("connected!!..");
             dataOutput = new DataOutputStream(socket.getOutputStream());
             dataInput = new DataInputStream(socket.getInputStream());
-
+            ois = new ObjectInputStream(socket.getInputStream());
+            oos = new ObjectOutputStream(socket.getOutputStream());
         }catch(Exception e){
             System.out.println(e);
         }
@@ -29,16 +31,19 @@ public class Client {
         dataOutput.writeUTF(msg);
     }
 
-    public void readFromServer() throws IOException, ClassNotFoundException {
-        ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
-        String message = (String) ois.readObject();
-        System.out.println("Message from server: " + message);
+    public char[][] getServerBoard() throws IOException, ClassNotFoundException {
+        char[][] board = (char[][]) ois.readObject();
+        return board;
     }
 
-    public void readFromServerv2() throws IOException, ClassNotFoundException {
-        ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
+    public String getServerPlayerName() throws IOException, ClassNotFoundException {
         String message = (String) dataInput.readUTF();
-        System.out.println("Message from server: " + message);
+        System.out.println("Server player name: " + message);
+        return message;
+    }
+
+    public void sendBoard(char[][] board) throws IOException {
+        oos.writeObject(board);
     }
     public void closeSocket() throws IOException {
         dataOutput.flush();
@@ -53,10 +58,15 @@ public class Client {
 
         System.out.print("set username> ");
         String username = input.next();
-
+        player2.setOpponentName(client.getServerPlayerName());
+        player2.setMyName(username);
         client.sendUsername(username);
-        client.sendUsername(username.substring(4));
-        client.readFromServerv2();
+
+        char[][] opponentBoard = client.getServerBoard();
+        player2.getBothBoards(opponentBoard);
+
+        client.sendBoard(player2.getGameBoard());
+
         client.closeSocket();
     }
 }

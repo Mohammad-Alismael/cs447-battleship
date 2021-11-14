@@ -16,7 +16,6 @@ public class Grid {
     private String opponentName = "Opponent";
     private String myName = "You";
     public Grid() {
-        System.out.println("loading board...");
         for (char[] row: gameBoard){
             Arrays.fill(row,'-');
         }
@@ -31,7 +30,6 @@ public class Grid {
         addShipToGameBoard(shipFactory.getShip(ShipType.BattleShip));
         addShipToGameBoard(shipFactory.getShip(ShipType.DestroyerShip));
         addShipToGameBoard(shipFactory.getShip(ShipType.SubmarineShip));
-        System.out.println("board finished!");
     }
 
     public void incrementPoint(){
@@ -90,18 +88,18 @@ public class Grid {
 
 
 
-    public void shoot(String coordinates){
+    public void shoot(String coordinates,char[][] boardWithShips,char[][] boardWithHits){
         int[] xys = getIndex(coordinates);
         int x = xys[0];
         int y = xys[1];
-        if (gameBoard[y][x] != '-'){
+        if (boardWithShips[y][x] != '-'){
             incrementPoint();
-            gameBoardWithHits[y][x] = 'H';
-            gameBoard[y][x] = 'H';
+            boardWithHits[y][x] = 'H';
+            boardWithShips[y][x] = 'H';
             System.out.println("you hit!!");
         }else {
-            gameBoardWithHits[y][x] = 'X';
-            gameBoard[y][x] = 'X';
+            boardWithHits[y][x] = 'X';
+            boardWithShips[y][x] = 'X';
             System.out.println("you missed!!");
         }
     }

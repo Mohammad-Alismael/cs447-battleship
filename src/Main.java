@@ -22,12 +22,12 @@ public class Main {
 
         System.out.print("place to shoot> ");
         String coordinates = input.next();
-        while (!coordinates.equals("quit")) {
-
-            player1.shoot(coordinates);
-            player1.getBothBoards(player1.getGameBoardWithHits());
-            System.out.print("place to shoot> ");
-            coordinates = input.next();
-        }
+//        while (!coordinates.equals("quit")) {
+//
+//            player1.shoot(coordinates);
+//            player1.getBothBoards(player1.getGameBoardWithHits());
+//            System.out.print("place to shoot> ");
+//            coordinates = input.next();
+//        }
     }
 }
