@@ -16,7 +16,6 @@ public class Grid {
     private String opponentName = "Opponent";
     private String myName = "You";
     public Grid() {
-        System.out.println("loading board...");
         for (char[] row: gameBoard){
             Arrays.fill(row,'-');
         }
@@ -31,7 +30,6 @@ public class Grid {
         addShipToGameBoard(shipFactory.getShip(ShipType.BattleShip));
         addShipToGameBoard(shipFactory.getShip(ShipType.DestroyerShip));
         addShipToGameBoard(shipFactory.getShip(ShipType.SubmarineShip));
-        System.out.println("board finished!");
     }
 
     public void incrementPoint(){
@@ -45,6 +43,10 @@ public class Grid {
 
     public char[][] getGameBoard() {
         return gameBoard;
+    }
+
+    public void setGameBoard(char[][] gameBoard) {
+        this.gameBoard = gameBoard;
     }
 
     public String getOpponentName() {
@@ -70,7 +72,7 @@ public class Grid {
     private void storeChar(){
         String [] letters = {"A","B","C","D","E","F","G","H","I","J"};
         for (int i = 0; i < letters.length; i++) {
-            ht1.put(letters[i],i);
+            ht1.put(letters[i],i); // C4
         }
     }
 
@@ -88,20 +90,23 @@ public class Grid {
         return gameBoard[x][y] == '-';
     }
 
-    public void shoot(String coordinates){
+
+
+    public char[][] shoot(String coordinates, char[][] boardWithShips){
         int[] xys = getIndex(coordinates);
         int x = xys[0];
         int y = xys[1];
-        if (gameBoard[y][x] != '-'){
+        if (boardWithShips[y][x] != '-'){
             incrementPoint();
             gameBoardWithHits[y][x] = 'H';
-            gameBoard[y][x] = 'H';
+            boardWithShips[y][x] = 'H';
             System.out.println("you hit!!");
         }else {
             gameBoardWithHits[y][x] = 'X';
-            gameBoard[y][x] = 'X';
+            boardWithShips[y][x] = 'X';
             System.out.println("you missed!!");
         }
+        return boardWithShips;
     }
 
     public char getElementIndex(String coordinates){
