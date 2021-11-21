@@ -70,7 +70,7 @@ public class Grid {
     private void storeChar(){
         String [] letters = {"A","B","C","D","E","F","G","H","I","J"};
         for (int i = 0; i < letters.length; i++) {
-            ht1.put(letters[i],i); // C4
+            ht1.put(letters[i],i);
         }
     }
 
@@ -87,8 +87,6 @@ public class Grid {
         int y = xys[1];
         return gameBoard[x][y] == '-';
     }
-
-
 
     public void shoot(String coordinates){
         int[] xys = getIndex(coordinates);

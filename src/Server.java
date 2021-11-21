@@ -16,7 +16,6 @@ public class Server {
             player1.setMyName(username);
             System.out.println("waiting for a client...");
 
-
             Socket socket=ss.accept();//establishes connection
             // reading from the client
             ObjectInputStream dis = new ObjectInputStream(socket.getInputStream());
@@ -26,14 +25,14 @@ public class Server {
             //write object to Socket
             oos.writeObject(player1.getMyName());
             oos.flush();
-            String  opponentName = (String) dis.readObject();
-            player1.setOpponentName(opponentName);
-            System.out.printf("%s has been connected!\n",player1.getOpponentName());
-            oos.writeObject(player1.getGameBoardWithHits());
-            oos.flush();
-
-            char[][] opponentBoard = (char[][]) dis.readObject();
-            player1.getBothBoards(opponentBoard);
+//            String  opponentName = (String) dis.readObject();
+//            player1.setOpponentName(opponentName);
+//            System.out.printf("%s has been connected!\n",player1.getOpponentName());
+//            oos.writeObject(player1.getGameBoardWithHits());
+//            oos.flush();
+//
+//            char[][] opponentBoard = (char[][]) dis.readObject();
+//            player1.getBothBoards(opponentBoard);
 
             oos.close();
             ss.close();
