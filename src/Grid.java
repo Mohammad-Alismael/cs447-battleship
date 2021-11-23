@@ -1,6 +1,7 @@
 
 import ShipFactory.*;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Hashtable;
 import java.util.Random;
@@ -11,6 +12,7 @@ public class Grid {
     private char[][] gameBoard = new char[10][10];
     private char[][] gameBoardWithHits = new char[10][10];
     private Hashtable<Object, Integer> ht1 = new Hashtable<Object, Integer>();
+    private ArrayList<Character> shipsContained = new ArrayList<>();
     private int[] generatedIndex;
     private int points = 0;
     private String opponentName = "Opponent";
@@ -25,11 +27,11 @@ public class Grid {
             Arrays.fill(row, '-');
         }
         storeChar();
-        IShipFactory shipFactory = new ShipFactory();
-        addShipToGameBoard(shipFactory.getShip(ShipType.CarrierShip));
-        addShipToGameBoard(shipFactory.getShip(ShipType.BattleShip));
-        addShipToGameBoard(shipFactory.getShip(ShipType.DestroyerShip));
-        addShipToGameBoard(shipFactory.getShip(ShipType.SubmarineShip));
+//        IShipFactory shipFactory = new ShipFactory();
+//        addShipToGameBoard(shipFactory.getShip(ShipType.CarrierShip));
+//        addShipToGameBoard(shipFactory.getShip(ShipType.BattleShip));
+//        addShipToGameBoard(shipFactory.getShip(ShipType.DestroyerShip));
+//        addShipToGameBoard(shipFactory.getShip(ShipType.SubmarineShip));
     }
 
     public void incrementPoint() {
@@ -73,8 +75,24 @@ public class Grid {
         return points;
     }
 
+    public int[] getGeneratedIndex() {
+        return generatedIndex;
+    }
+
+    public void setGeneratedIndex(int[] generatedIndex) {
+        this.generatedIndex = generatedIndex;
+    }
+
     public void setPoints(int points) {
         this.points = points;
+    }
+
+    public ArrayList<Character> getShipsContained() {
+        return shipsContained;
+    }
+
+    public Boolean isItOnTHeBoard(Ship ship){
+        return shipsContained.contains(ship.getSymbol());
     }
 
     private void storeChar() {
@@ -143,8 +161,12 @@ public class Grid {
         }
     }
 
-    public void setRandomIndex(int x, int y) {
+    public void setIndex(int x, int y) {
         generatedIndex = new int[]{x - 1, y - 1};
+    }
+
+    public void setIndex(int[] xys) {
+        generatedIndex = new int[]{xys[0], xys[1]};
     }
 
     private char[] SliceBoardGameForRows(int generatedX) {
@@ -234,7 +256,7 @@ public class Grid {
 
     private void addShipFromBottomToPoint(int shipLength, int[] generatedIndex, Ship ship) {
         int position = generatedIndex[1] + shipLength;
-        for (int i = generatedIndex[1]; i < position - 1; i++) {
+        for (int i = generatedIndex[1]; i < position; i++) {
             gameBoard[i][generatedIndex[0]] = ship.getSymbol();
         }
     }
@@ -260,6 +282,54 @@ public class Grid {
         }
     }
 
+    public int addShipToGameBoardChosen(Ship ship, String position) {
+        System.out.println("isItOnTHeBoard " + isItOnTHeBoard(ship));
+        int shipLength = ship.getLength();
+        if (!isItOnTHeBoard(ship)) {
+            switch (position) {
+                case "left":
+                    if (checkIfTheShipCanFitFromLeft(shipLength, generatedIndex)) {
+                        addShipFromLeftToPoint(shipLength, generatedIndex, ship);
+                        shipsContained.add(ship.getSymbol());
+                        return 0;
+                    } else {
+                        return -1;
+                    }
+                case "right":
+                    if (checkIfTheShipCanFitFromRight(shipLength, generatedIndex)) {
+                        addShipFromRightToPoint(shipLength, generatedIndex, ship);
+                        shipsContained.add(ship.getSymbol());
+                        return 0;
+                    } else {
+                        return -1;
+                    }
+                case "top":
+                    if (checkIfTheShipCanFitFromTop(shipLength, generatedIndex)) {
+                        addShipFromTopToPoint(shipLength, generatedIndex, ship);
+                        shipsContained.add(ship.getSymbol());
+                        return 0;
+                    } else {
+                        return -1;
+                    }
+                case "bottom":
+                    if (checkIfTheShipCanFitFromBottom(shipLength, generatedIndex)) {
+                        addShipFromBottomToPoint(shipLength, generatedIndex, ship);
+                        shipsContained.add(ship.getSymbol());
+                        return 0;
+                    } else {
+                        return -1;
+                    }
+                default:
+                    System.out.println("Enter a valid direction");
+                    return -1;
+            }
+        }else {
+            return -2;
+        }
+
+
+    }
+
 
     public void getBoardWithHits() {
         System.out.print("   A  B  C  D  E  F  G  H  I  J");
@@ -278,7 +348,7 @@ public class Grid {
         System.out.printf("%d%s\n", 10, Arrays.toString(gameBoard[9]));
     }
 
-    public void getBothBoards(char[][] board){
+    public void getBothBoards(char[][] board) {
         System.out.printf("              %s                                    %s              \n", myName, opponentName);
         System.out.print("   A  B  C  D  E  F  G  H  I  J           A  B  C  D  E  F  G  H  I  J");
         System.out.println();
@@ -288,40 +358,52 @@ public class Grid {
         System.out.printf("%d%s       %d%s\n", 10, Arrays.toString(gameBoard[9]), 10, Arrays.toString(board[9]));
     }
 
-    public void choosingShipPlaces(int[] index, String direction, Ship ship) {
-        if (direction.equals("left")) {
-            if (checkIfTheShipCanFitFromLeft(ship.getLength(), index)) {
-                addShipFromLeftToPoint(ship.getLength(), index, ship);
-                System.out.println(ship.getSymbol() +  " Added to the left");
-            } else {
-                System.out.println("Invalid Placement");
-            }
-        }else if (direction.equals("right")) {
-            if (checkIfTheShipCanFitFromRight(ship.getLength(), index)) {
-                addShipFromRightToPoint(ship.getLength(), index, ship);
-                System.out.println(ship.getSymbol() +  " Added to the right of the index");
-            } else {
-                System.out.println("Invalid Placement");
-            }
-        }else if (direction.equals("top")) {
-            if (checkIfTheShipCanFitFromTop(ship.getLength(), index)) {
-                addShipFromTopToPoint(ship.getLength(), index, ship);
-                System.out.println(ship.getSymbol() +  " Added to the top of the index");
-            }else {
-                System.out.println("Invalid Placement");
-            }
-        }else if (direction.equals("bottom")) {
-            if (checkIfTheShipCanFitFromBottom(ship.getLength(), index)) {
-                addShipFromBottomToPoint(ship.getLength(), index, ship);
-                System.out.println(ship.getSymbol() +  " Added to the bottom of the index");
-            }else {
-                System.out.println("Invalid Placement");
-            }
-        }else{
-            System.out.println("Enter a valid direction");
-            }
-        }
 
 
+
+//    public int choosingShipPlaces(int[] index, String direction, Ship ship) {
+//        switch (direction) {
+//            case "left":
+//                if (checkIfTheShipCanFitFromLeft(ship.getLength(), index)) {
+//                    addShipFromLeftToPoint(ship.getLength(), index, ship);
+//                    System.out.println(ship.getSymbol() + " Added to the left");
+//                    return 0;
+//                } else {
+//                    System.out.println("Invalid Placement");
+//                    return -1;
+//                }
+//            case "right":
+//                if (checkIfTheShipCanFitFromRight(ship.getLength(), index)) {
+//                    addShipFromRightToPoint(ship.getLength(), index, ship);
+//                    System.out.println(ship.getSymbol() + " Added to the right of the index");
+//                    return 0;
+//                } else {
+//                    System.out.println("Invalid Placement");
+//                    return -1;
+//                }
+//            case "top":
+//                if (checkIfTheShipCanFitFromTop(ship.getLength(), index)) {
+//                    addShipFromTopToPoint(ship.getLength(), index, ship);
+//                    System.out.println(ship.getSymbol() + " Added to the top of the index");
+//                    return 0;
+//                } else {
+//                    System.out.println("Invalid Placement");
+//                    return -1;
+//                }
+//            case "bottom":
+//                if (checkIfTheShipCanFitFromBottom(ship.getLength(), index)) {
+//                    addShipFromBottomToPoint(ship.getLength(), index, ship);
+//                    System.out.println(ship.getSymbol() + " Added to the bottom of the index");
+//                    return 0;
+//                } else {
+//                    System.out.println("Invalid Placement");
+//                    return -1;
+//                }
+//            default:
+//                System.out.println("Enter a valid direction");
+//                return -1;
+//        }
+//        }
+//
     }
 

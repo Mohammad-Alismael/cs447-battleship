@@ -11,40 +11,48 @@ public class Server {
 
     public Server() {
     }
-
+    public static IShipFactory shipFactory = new ShipFactory();
+    public static Grid player1 = new Grid();
+    public static  Scanner input = new Scanner(System.in);
+    public static int loadedShips = 0;
     public static void main(String[] args) {
         try {
-            Scanner input = new Scanner(System.in);
+
             ServerSocket ss = new ServerSocket(34000);
-            Grid player1 = new Grid();
+
             System.out.print("set username> ");
             String username = input.next();
             player1.setMyName(username);
 
             //Choosing Ship Places
-            for (int i=0;i < 4; i++) {
-                String shipStartingIndex = chooseIndex(input);
-                String direction = chooseDirection(input);
-                String shipType = chooseShip(input);
-                IShipFactory shipFactory = new ShipFactory();
+            String shipStartingIndex;
+            String shipType ;
+            int[] xys;
+            while (loadedShips <= 3) {
+
+                shipStartingIndex = chooseIndex(input);
+                shipType = chooseShip(input);
+                xys = player1.getIndex(shipStartingIndex);
+                player1.setIndex(xys);
+
                 switch (shipType) {
                     case "Carrier":
-                        player1.choosingShipPlaces(player1.getIndex(shipStartingIndex), direction, shipFactory.getShip(ShipType.CarrierShip));
+                        addShip(shipFactory.getShip(ShipType.CarrierShip));
                         break;
                     case "Destroyer":
-                        player1.choosingShipPlaces(player1.getIndex(shipStartingIndex), direction, shipFactory.getShip(ShipType.DestroyerShip));
+                        addShip(shipFactory.getShip(ShipType.DestroyerShip));
                         break;
                     case "Submarine":
-                        player1.choosingShipPlaces(player1.getIndex(shipStartingIndex), direction, shipFactory.getShip(ShipType.SubmarineShip));
+                        addShip(shipFactory.getShip(ShipType.SubmarineShip));
                         break;
                     case "Battleship":
-                        player1.choosingShipPlaces(player1.getIndex(shipStartingIndex), direction, shipFactory.getShip(ShipType.BattleShip));
+                        addShip(shipFactory.getShip(ShipType.BattleShip));
                         break;
                     default:
                         System.out.println("Enter a valid Ship Type");
                         break;
                 }
-                player1.getBothBoards(player1.getGameBoard());
+                player1.getBoardWithShips();
             }
 
             System.out.println("waiting for a client...");
@@ -114,6 +122,27 @@ public class Server {
     public static String chooseShip(Scanner input){
         System.out.print("Type of the Ship>");
         return input.next();
+    }
+
+    public static void addShip(Ship shipType){
+        int Error;
+        int[] xys;
+        do {
+//            Ship ship = shipFactory.getShip(ShipType.CarrierShip);
+            String direction = chooseDirection(input);
+            Error = player1.addShipToGameBoardChosen(shipType,direction);
+            if (Error == -1) {
+                System.out.println("choose a different location!");
+                String shipStartingIndex = chooseIndex(input);
+                xys = player1.getIndex(shipStartingIndex);
+                player1.setIndex(xys);
+            }else if (Error == -2){
+                System.out.println("choose a different type");
+            } else {
+                System.out.printf("%s has been added to the board\n",shipType.getSymbol());
+                loadedShips++;
+            }
+        }while (Error == -1);
     }
 
 }
