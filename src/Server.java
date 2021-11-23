@@ -13,13 +13,23 @@ public class Server {
     }
 
     public static void main(String[] args) {
-        try{
+        try {
             Scanner input = new Scanner(System.in);
             ServerSocket ss = new ServerSocket(34000);
             Grid player1 = new Grid();
             System.out.print("set username> ");
             String username = input.next();
             player1.setMyName(username);
+
+            //Choosing Ship Places
+            String coordinates1 = chooseIndex(input);
+            String direction = chooseDirection(input);
+            String shipType = chooseShip(input);
+            if (shipType.equals("Carrier")) {
+                player1.choosingShipPlaces(player1.getIndex(coordinates1), direction, );
+            }//else if("D"){
+//            player1.choosingShipPlaces(player1.getIndex(coordinates1), direction, );
+//            }
 
             System.out.println("waiting for a client...");
             Socket socket=ss.accept();//establishes connection
@@ -66,14 +76,28 @@ public class Server {
             if (player1.checkWins()) {
                 System.out.println("you've won the game congrats");
                 ss.close();
+            }else{
+                System.out.println("You have: "+ player1.getPoints() +" Points");
             }
         }catch(Exception e){
             System.out.println(e);
         }
     }
-
     public static String shoot(Scanner input){
         System.out.print("shoot a place>");
         return input.next();
     }
+    public static String chooseIndex(Scanner input){
+        System.out.print("Choose Index>");
+        return input.next();
+    }
+    public static String chooseDirection(Scanner input){
+        System.out.print("Choose the direction of the Ship>");
+        return input.next();
+    }
+    public static String chooseShip(Scanner input){
+        System.out.print("Type of the Ship>");
+        return input.next();
+    }
+
 }
