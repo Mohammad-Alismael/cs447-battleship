@@ -117,15 +117,19 @@ public class Grid {
         int[] xys = getIndex(coordinates);
         int x = xys[0];
         int y = xys[1];
-        if (boardWithShips[y][x] != '-'){
-            incrementPoint();
-            gameBoardWithHits[y][x] = 'H';
-            boardWithShips[y][x] = 'H';
-            System.out.println("you hit!!");
+        if (boardWithShips[y][x] == 'H' || boardWithShips[y][x] == 'X') {
+            throw new IllegalArgumentException("you already shot this place!");
         }else {
-            gameBoardWithHits[y][x] = 'X';
-            boardWithShips[y][x] = 'X';
-            System.out.println("you missed!!");
+            if (boardWithShips[y][x] != '-') {
+                incrementPoint();
+                gameBoardWithHits[y][x] = 'H';
+                boardWithShips[y][x] = 'H';
+                System.out.println("you hit!!");
+            } else {
+                gameBoardWithHits[y][x] = 'X';
+                boardWithShips[y][x] = 'X';
+                System.out.println("you missed!!");
+            }
         }
         return boardWithShips;
     }

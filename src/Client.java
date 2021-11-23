@@ -75,14 +75,18 @@ public class Client {
 
             player2.setGameBoard(client.getNewBoard());
             player2.getBothBoards(player2.getGameBoardWithHits());
+            try {
+                // shooting my first shot
+                String coordinates = shoot(input);
+                char[][] newOpponentBoardWithShips = player2.shoot(coordinates, opponentBoardWithShips);
+                player2.getBothBoards(player2.getGameBoardWithHits());
 
-            // shooting my first shot
-            String coordinates = shoot(input);
-            char[][] newOpponentBoardWithShips = player2.shoot(coordinates, opponentBoardWithShips);
-            player2.getBothBoards(player2.getGameBoardWithHits());
+                client.oos.writeObject(newOpponentBoardWithShips);
+                client.oos.flush();
 
-            client.oos.writeObject(newOpponentBoardWithShips);
-            client.oos.flush();
+            }catch (Exception e){
+                System.out.println(e.getMessage());
+            }
 
             System.out.printf("waiting %s to shoot\n", player2.getOpponentName());
         }

@@ -47,15 +47,26 @@ public class Server {
                 // get board from client
                 char[][] opponentBoardWithShips = (char[][]) ois.readObject();
                 player1.getBothBoards(player1.getGameBoardWithHits());
+//                boolean isThereError = false;
+//                do {
 
-                // shooting my first shot
-                String coordinates = shoot(input);
-                char[][] newOpponentBoardWithShips = player1.shoot(coordinates, opponentBoardWithShips);
-                player1.getBothBoards(player1.getGameBoardWithHits());
+                    try {
+                        // shooting my first shot
+                        String coordinates = shoot(input);
+                        char[][] newOpponentBoardWithShips = player1.shoot(coordinates, opponentBoardWithShips);
+                        player1.getBothBoards(player1.getGameBoardWithHits());
 
-                // sending new  opponent board with ships
-                oos.writeObject(newOpponentBoardWithShips);
-                oos.flush();
+                        // sending new  opponent board with ships
+                        oos.writeObject(newOpponentBoardWithShips);
+                        oos.flush();
+
+                    } catch (Exception e) {
+                        System.out.println(e.getMessage());
+//                        isThereError = true;
+                    }
+
+//                }while (!isThereError);
+
 
                 System.out.printf("waiting %s to shoot\n", player1.getOpponentName());
 
