@@ -22,14 +22,30 @@ public class Server {
             player1.setMyName(username);
 
             //Choosing Ship Places
-            String shipStartingIndex = chooseIndex(input);
-            String direction = chooseDirection(input);
-            String shipType = chooseShip(input);
-            if (shipType.equals("Carrier")) {
-                player1.choosingShipPlaces(player1.getIndex(shipStartingIndex), direction,shipType );
-            }//else if("Destroyer"){
-//            player1.choosingShipPlaces(player1.getIndex(coordinates1), direction, );
-//            }
+            for (int i=0;i < 4; i++) {
+                String shipStartingIndex = chooseIndex(input);
+                String direction = chooseDirection(input);
+                String shipType = chooseShip(input);
+                IShipFactory shipFactory = new ShipFactory();
+                switch (shipType) {
+                    case "Carrier":
+                        player1.choosingShipPlaces(player1.getIndex(shipStartingIndex), direction, shipFactory.getShip(ShipType.CarrierShip));
+                        break;
+                    case "Destroyer":
+                        player1.choosingShipPlaces(player1.getIndex(shipStartingIndex), direction, shipFactory.getShip(ShipType.DestroyerShip));
+                        break;
+                    case "Submarine":
+                        player1.choosingShipPlaces(player1.getIndex(shipStartingIndex), direction, shipFactory.getShip(ShipType.SubmarineShip));
+                        break;
+                    case "Battleship":
+                        player1.choosingShipPlaces(player1.getIndex(shipStartingIndex), direction, shipFactory.getShip(ShipType.BattleShip));
+                        break;
+                    default:
+                        System.out.println("Enter a valid Ship Type");
+                        break;
+                }
+                player1.getBothBoards(player1.getGameBoard());
+            }
 
             System.out.println("waiting for a client...");
             Socket socket=ss.accept();//establishes connection
