@@ -22,12 +22,12 @@ public class Server {
             player1.setMyName(username);
 
             //Choosing Ship Places
-            String coordinates1 = chooseIndex(input);
+            String shipStartingIndex = chooseIndex(input);
             String direction = chooseDirection(input);
             String shipType = chooseShip(input);
             if (shipType.equals("Carrier")) {
-                player1.choosingShipPlaces(player1.getIndex(coordinates1), direction, );
-            }//else if("D"){
+                player1.choosingShipPlaces(player1.getIndex(shipStartingIndex), direction,shipType );
+            }//else if("Destroyer"){
 //            player1.choosingShipPlaces(player1.getIndex(coordinates1), direction, );
 //            }
 
