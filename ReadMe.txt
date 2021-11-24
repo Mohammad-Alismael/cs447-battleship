@@ -10,6 +10,6 @@ Battleship
 8. Both players go back and forth until one of them gets 14 points to win the game.
 
 Bonus features that we made
-- asking for a username
-- the user can set the ship by his/her will
-- can't shoot the same place twice
+- asking for a username for both sides
+- the user can set the ship by his/her will ( placing unique ships ).
+- the user can't shoot the same place twice

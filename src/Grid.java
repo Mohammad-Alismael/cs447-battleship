@@ -250,7 +250,7 @@ public class Grid {
         char[] tmp = SliceBoardGameForColumns(generatedIndex[0]);
         int position = generatedIndex[1] + shipLength;
         if (position >= 0 && position <= 9) {
-            for (int i = generatedIndex[1]; i < position - 1; i++) {
+            for (int i = generatedIndex[1]; i < position ; i++) {
                 if (tmp[i] != '-') return false;
             }
             return true;
