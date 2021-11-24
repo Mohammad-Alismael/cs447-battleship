@@ -23,8 +23,7 @@ public class Server {
             System.out.print("set username> ");
             String username = input.next();
             player1.setMyName(username);
-
-            //Choosing Ship Places
+    //      -------------------------- for setting up the board --------------------------
             String shipStartingIndex;
             String shipType ;
             int[] xys;
@@ -32,7 +31,7 @@ public class Server {
 
                 shipStartingIndex = chooseIndex(input);
                 shipType = chooseShip(input);
-                xys = player1.getIndex(shipStartingIndex);
+                xys = player1.getIndex(shipStartingIndex.toUpperCase());
                 player1.setIndex(xys);
 
                 switch (shipType) {
@@ -54,6 +53,7 @@ public class Server {
                 }
                 player1.getBoardWithShips();
             }
+    //      -------------------------- ends here --------------------------
 
             System.out.println("waiting for a client...");
             Socket socket=ss.accept();//establishes connection
@@ -83,7 +83,7 @@ public class Server {
                 player1.getBothBoards(player1.getGameBoardWithHits());
 
                 // shooting my first shot
-                String coordinates = shoot(input);
+                String coordinates = shoot(input).toUpperCase();
                 char[][] newOpponentBoardWithShips = player1.shoot(coordinates, opponentBoardWithShips);
                 player1.getBothBoards(player1.getGameBoardWithHits());
 
@@ -133,7 +133,7 @@ public class Server {
             if (Error == ErrorHandling.LOCATION_ERROR) {
                 System.out.println("choose a different location!");
                 String shipStartingIndex = chooseIndex(input);
-                xys = player1.getIndex(shipStartingIndex);
+                xys = player1.getIndex(shipStartingIndex.toUpperCase());
                 player1.setIndex(xys);
             }else if (Error == ErrorHandling.TYPE_ERROR){
                 System.out.println("choose a different type");

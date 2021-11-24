@@ -1,3 +1,8 @@
+import ShipFactory.IShipFactory;
+import ShipFactory.Ship;
+import ShipFactory.ShipFactory;
+import ShipFactory.ShipType;
+
 import java.io.*;
 import java.net.*;
 import java.util.Scanner;
@@ -54,14 +59,50 @@ public class Client {
         dataOutput.close();
         socket.close();
     }
-
+    public static IShipFactory shipFactory = new ShipFactory();
+    public static Grid player2 = new Grid();
+    public static Scanner input = new Scanner(System.in);
+    public static int loadedShips = 0;
     public static void main(String[] args) throws IOException, ClassNotFoundException {
         Client client  = new Client();
-        Grid player2 = new Grid();
-        Scanner input = new Scanner(System.in);
+
 
         System.out.print("set username> ");
         String username = input.next();
+//      -------------------------- for setting up the board --------------------------
+        String shipStartingIndex;
+        String shipType ;
+        int[] xys;
+        while (loadedShips <= 3) {
+
+            shipStartingIndex = chooseIndex(input);
+            shipType = chooseShip(input);
+            xys = player2.getIndex(shipStartingIndex.toUpperCase());
+            player2.setIndex(xys);
+
+            switch (shipType) {
+                case "Carrier":
+                    addShip(shipFactory.getShip(ShipType.CarrierShip));
+                    break;
+                case "Destroyer":
+                    addShip(shipFactory.getShip(ShipType.DestroyerShip));
+                    break;
+                case "Submarine":
+                    addShip(shipFactory.getShip(ShipType.SubmarineShip));
+                    break;
+                case "Battleship":
+                    addShip(shipFactory.getShip(ShipType.BattleShip));
+                    break;
+                default:
+                    System.out.println("Enter a valid Ship Type");
+                    break;
+            }
+            player2.getBoardWithShips();
+        }
+//      -------------------------- ends here --------------------------
+
+
+
         player2.setOpponentName(client.getServerPlayerName());
         player2.setMyName(username);
         client.sendUsername(username);
@@ -77,7 +118,7 @@ public class Client {
             player2.getBothBoards(player2.getGameBoardWithHits());
 
             // shooting my first shot
-            String coordinates = shoot(input);
+            String coordinates = shoot(input).toUpperCase();
             char[][] newOpponentBoardWithShips = player2.shoot(coordinates, opponentBoardWithShips);
             player2.getBothBoards(player2.getGameBoardWithHits());
 
@@ -96,5 +137,37 @@ public class Client {
     public static String shoot(Scanner input){
         System.out.print("shoot a place>");
         return input.next();
+    }
+    public static String chooseIndex(Scanner input){
+        System.out.print("Choose Index>");
+        return input.next();
+    }
+    public static String chooseDirection(Scanner input){
+        System.out.print("Choose the direction of the Ship>");
+        return input.next();
+    }
+    public static String chooseShip(Scanner input){
+        System.out.print("Type of the Ship>");
+        return input.next();
+    }
+
+    public static void addShip(Ship shipType){
+        int Error;
+        int[] xys;
+        do {
+            String direction = chooseDirection(input);
+            Error = player2.addShipToGameBoardChosen(shipType,direction);
+            if (Error == ErrorHandling.LOCATION_ERROR) {
+                System.out.println("choose a different location!");
+                String shipStartingIndex = chooseIndex(input);
+                xys = player2.getIndex(shipStartingIndex.toUpperCase());
+                player2.setIndex(xys);
+            }else if (Error == ErrorHandling.TYPE_ERROR){
+                System.out.println("choose a different type");
+            } else {
+                System.out.printf("%s has been added to the board\n",shipType.getSymbol());
+                loadedShips++;
+            }
+        }while (Error == ErrorHandling.LOCATION_ERROR);
     }
 }
