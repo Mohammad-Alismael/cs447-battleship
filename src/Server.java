@@ -128,21 +128,20 @@ public class Server {
         int Error;
         int[] xys;
         do {
-//            Ship ship = shipFactory.getShip(ShipType.CarrierShip);
             String direction = chooseDirection(input);
             Error = player1.addShipToGameBoardChosen(shipType,direction);
-            if (Error == -1) {
+            if (Error == ErrorHandling.LOCATION_ERROR) {
                 System.out.println("choose a different location!");
                 String shipStartingIndex = chooseIndex(input);
                 xys = player1.getIndex(shipStartingIndex);
                 player1.setIndex(xys);
-            }else if (Error == -2){
+            }else if (Error == ErrorHandling.TYPE_ERROR){
                 System.out.println("choose a different type");
             } else {
                 System.out.printf("%s has been added to the board\n",shipType.getSymbol());
                 loadedShips++;
             }
-        }while (Error == -1);
+        }while (Error == ErrorHandling.LOCATION_ERROR);
     }
 
 }
