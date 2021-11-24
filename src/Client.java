@@ -118,9 +118,12 @@ public class Client {
             player2.getBothBoards(player2.getGameBoardWithHits());
 
             // shooting my first shot
-            String coordinates = shoot(input).toUpperCase();
-            char[][] newOpponentBoardWithShips = player2.shoot(coordinates, opponentBoardWithShips);
-            player2.getBothBoards(player2.getGameBoardWithHits());
+            char[][] newOpponentBoardWithShips;
+            do {
+                String coordinates = shoot(input).toUpperCase();
+                newOpponentBoardWithShips = player2.shoot(coordinates, opponentBoardWithShips);
+                player2.getBothBoards(player2.getGameBoardWithHits());
+            }while (newOpponentBoardWithShips.length == 0);
 
             client.oos.writeObject(newOpponentBoardWithShips);
             client.oos.flush();

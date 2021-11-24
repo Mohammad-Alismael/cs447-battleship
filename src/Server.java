@@ -83,9 +83,12 @@ public class Server {
                 player1.getBothBoards(player1.getGameBoardWithHits());
 
                 // shooting my first shot
-                String coordinates = shoot(input).toUpperCase();
-                char[][] newOpponentBoardWithShips = player1.shoot(coordinates, opponentBoardWithShips);
-                player1.getBothBoards(player1.getGameBoardWithHits());
+                char[][] newOpponentBoardWithShips;
+                do {
+                    String coordinates = shoot(input).toUpperCase();
+                    newOpponentBoardWithShips = player1.shoot(coordinates, opponentBoardWithShips);
+                    player1.getBothBoards(player1.getGameBoardWithHits());
+                }while (newOpponentBoardWithShips.length == 0);
 
                 // sending new  opponent board with ships
                 oos.writeObject(newOpponentBoardWithShips);
