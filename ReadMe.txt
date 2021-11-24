@@ -8,3 +8,8 @@ Battleship
 6. If he hits a ship the index will be marked by H.
 7. If he misses, the index will be marked by X.
 8. Both players go back and forth until one of them gets 14 points to win the game.
+
+Bonus features that we made
+- asking for a username
+- the user can set the ship by his/her will
+- can't shoot the same place twice
